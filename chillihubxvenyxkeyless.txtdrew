@@ -1,0 +1,315 @@
+local CorrectKey = "ChilliHubxVenyxV6KwyKakwiwjkeoLapqowjheiwiOqowi"
+local KeyLink = "https://link4m.net/UY6kn18X"
+local ScriptURL = "https://id.tomroblox.com/raw/kairoblox/chilli-x-venyx-viet-hoa-v6-vip-pro98"
+local SaveFileName = "ChilliHubKey.txt"
+
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+
+-- ===== HỆ THỐNG KIỂM TRA & LƯU KEY (AUTO-SAVE) =====
+local function SaveKeyData(key)
+    if writefile then
+        local data = {
+            Key = key,
+            Time = os.time()
+        }
+        pcall(function()
+            writefile(SaveFileName, game:GetService("HttpService"):JSONEncode(data))
+        end)
+    end
+end
+
+local function LoadSavedKey()
+    if isfile and readfile and isfile(SaveFileName) then
+        local success, result = pcall(function()
+            return game:GetService("HttpService"):JSONDecode(readfile(SaveFileName))
+        end)
+        
+        if success and type(result) == "table" then
+            local savedKey = result.Key
+            local savedTime = result.Time or 0
+            local currentTime = os.time()
+            
+            -- Kiểm tra xem đã quá 24 giờ (86400 giây) hay chưa
+            if (currentTime - savedTime) < 86400 then
+                if savedKey == CorrectKey then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+-- Tự động bỏ qua Bảng Key nếu đã lưu Key hợp lệ còn thời hạn
+if LoadSavedKey() then
+    loadstring(game:HttpGet(ScriptURL))()
+    return
+end
+
+-- ===== CHẠY GIAO DIỆN NẾU CHƯA CÓ KEY HỢP LỆ =====
+if CoreGui:FindFirstChild("ChilliHubKeySystem") then
+    CoreGui.ChilliHubKeySystem:Destroy()
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ChilliHubKeySystem"
+ScreenGui.Parent = CoreGui or Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+-- Main Container (Size: 430x280)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.Size = UDim2.new(0, 430, 0, 280)
+MainFrame.BackgroundColor3 = Color3.fromRGB(12, 10, 13)
+MainFrame.BackgroundTransparency = 0.15
+MainFrame.ClipsDescendants = true
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+local MainCorner = Instance.new("UICorner", MainFrame)
+MainCorner.CornerRadius = UDim.new(0, 16)
+
+local MainStroke = Instance.new("UIStroke", MainFrame)
+MainStroke.Color = Color3.fromRGB(230, 35, 45)
+MainStroke.Thickness = 2
+MainStroke.Transparency = 0.2
+
+-- Design Tiêu Đề Nổi 3D
+local TitleShadow = Instance.new("TextLabel")
+TitleShadow.Name = "TitleShadow"
+TitleShadow.Parent = MainFrame
+TitleShadow.BackgroundTransparency = 1
+TitleShadow.Position = UDim2.new(0, 2, 0, 20)
+TitleShadow.Size = UDim2.new(1, 0, 0, 36)
+TitleShadow.Font = Enum.Font.FredokaOne
+TitleShadow.Text = "Chilli Hub X Venyx V6"
+TitleShadow.TextColor3 = Color3.fromRGB(0, 0, 0)
+TitleShadow.TextSize = 25.000
+
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0, 0, 0, 18)
+Title.Size = UDim2.new(1, 0, 0, 36)
+Title.Font = Enum.Font.FredokaOne
+Title.Text = "Chilli Hub X Venyx V6"
+Title.TextColor3 = Color3.fromRGB(255, 45, 55)
+Title.TextSize = 25.000
+
+local TitleStroke = Instance.new("UIStroke", Title)
+TitleStroke.Color = Color3.fromRGB(20, 0, 0)
+TitleStroke.Thickness = 1.5
+
+-- Subtitle Label
+local SubTitle = Instance.new("TextLabel")
+SubTitle.Parent = MainFrame
+SubTitle.BackgroundTransparency = 1
+SubTitle.Position = UDim2.new(0, 0, 0, 54)
+SubTitle.Size = UDim2.new(1, 0, 0, 20)
+SubTitle.Font = Enum.Font.GothamMedium
+SubTitle.Text = "Premium Verification System"
+SubTitle.TextColor3 = Color3.fromRGB(150, 150, 150)
+SubTitle.TextSize = 11.000
+
+-- Thông báo trên Menu
+local AlertFrame = Instance.new("Frame")
+AlertFrame.Name = "AlertFrame"
+AlertFrame.Parent = MainFrame
+AlertFrame.BackgroundColor3 = Color3.fromRGB(25, 15, 18)
+AlertFrame.BackgroundTransparency = 1
+AlertFrame.Position = UDim2.new(0.08, 0, 0.31, 0)
+AlertFrame.Size = UDim2.new(0.84, 0, 0, 30)
+
+local AlertCorner = Instance.new("UICorner", AlertFrame)
+AlertCorner.CornerRadius = UDim.new(0, 6)
+
+local AlertStroke = Instance.new("UIStroke", AlertFrame)
+AlertStroke.Color = Color3.fromRGB(255, 50, 50)
+AlertStroke.Thickness = 1
+AlertStroke.Transparency = 1
+
+local AlertText = Instance.new("TextLabel")
+AlertText.Parent = AlertFrame
+AlertText.BackgroundTransparency = 1
+AlertText.Size = UDim2.new(1, 0, 1, 0)
+AlertText.Font = Enum.Font.GothamBold
+AlertText.Text = ""
+AlertText.TextColor3 = Color3.fromRGB(255, 80, 80)
+AlertText.TextSize = 12.000
+AlertText.TextTransparency = 1
+
+local function ShowInMenuNotice(msg, isError)
+    AlertText.Text = msg
+    local textColor = isError and Color3.fromRGB(255, 75, 75) or Color3.fromRGB(80, 255, 140)
+    local strokeColor = isError and Color3.fromRGB(255, 40, 50) or Color3.fromRGB(50, 220, 100)
+    local bgColor = isError and Color3.fromRGB(35, 15, 18) or Color3.fromRGB(15, 35, 20)
+    
+    AlertText.TextColor3 = textColor
+    AlertStroke.Color = strokeColor
+    AlertFrame.BackgroundColor3 = bgColor
+    
+    TweenService:Create(AlertFrame, TweenInfo.new(0.2), {BackgroundTransparency = 0.2}):Play()
+    TweenService:Create(AlertStroke, TweenInfo.new(0.2), {Transparency = 0.3}):Play()
+    TweenService:Create(AlertText, TweenInfo.new(0.2), {TextTransparency = 0}):Play()
+    
+    task.delay(3.5, function()
+        TweenService:Create(AlertFrame, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
+        TweenService:Create(AlertStroke, TweenInfo.new(0.4), {Transparency = 1}):Play()
+        TweenService:Create(AlertText, TweenInfo.new(0.4), {TextTransparency = 1}):Play()
+    end)
+end
+
+-- Ô nhập Key chống tràn chữ
+local KeyInputFrame = Instance.new("Frame")
+KeyInputFrame.Name = "KeyInputFrame"
+KeyInputFrame.Parent = MainFrame
+KeyInputFrame.BackgroundColor3 = Color3.fromRGB(22, 22, 25)
+KeyInputFrame.BackgroundTransparency = 0.3
+KeyInputFrame.Position = UDim2.new(0.08, 0, 0.45, 0)
+KeyInputFrame.Size = UDim2.new(0.84, 0, 0, 46)
+KeyInputFrame.ClipsDescendants = true
+
+local InputCorner = Instance.new("UICorner", KeyInputFrame)
+InputCorner.CornerRadius = UDim.new(0, 8)
+
+local InputStroke = Instance.new("UIStroke", KeyInputFrame)
+InputStroke.Color = Color3.fromRGB(50, 50, 55)
+InputStroke.Thickness = 1.2
+
+local KeyInput = Instance.new("TextBox")
+KeyInput.Name = "KeyInput"
+KeyInput.Parent = KeyInputFrame
+KeyInput.BackgroundTransparency = 1
+KeyInput.Position = UDim2.new(0, 12, 0, 0)
+KeyInput.Size = UDim2.new(1, -24, 1, 0)
+KeyInput.Font = Enum.Font.Gotham
+KeyInput.PlaceholderText = "Enter key here..."
+KeyInput.PlaceholderColor3 = Color3.fromRGB(110, 110, 115)
+KeyInput.Text = ""
+KeyInput.TextColor3 = Color3.fromRGB(240, 240, 240)
+KeyInput.TextSize = 12.000
+KeyInput.ClearTextOnFocus = false
+KeyInput.ClipsDescendants = true
+KeyInput.TextTruncate = Enum.TextTruncate.AtEnd
+KeyInput.TextXAlignment = Enum.TextXAlignment.Center
+
+KeyInput.Focused:Connect(function()
+    TweenService:Create(InputStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(220, 40, 50)}):Play()
+end)
+
+KeyInput.FocusLost:Connect(function()
+    TweenService:Create(InputStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(50, 50, 55)}):Play()
+end)
+
+-- Nút Get Key
+local GetKeyBtn = Instance.new("TextButton")
+GetKeyBtn.Name = "GetKeyBtn"
+GetKeyBtn.Parent = MainFrame
+GetKeyBtn.BackgroundColor3 = Color3.fromRGB(28, 26, 30)
+GetKeyBtn.BackgroundTransparency = 0.2
+GetKeyBtn.Position = UDim2.new(0.08, 0, 0.72, 0)
+GetKeyBtn.Size = UDim2.new(0.41, 0, 0, 42)
+GetKeyBtn.Font = Enum.Font.GothamBold
+GetKeyBtn.Text = "GET KEY"
+GetKeyBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+GetKeyBtn.TextSize = 13.000
+
+local GetKeyCorner = Instance.new("UICorner", GetKeyBtn)
+GetKeyCorner.CornerRadius = UDim.new(0, 8)
+
+local GetKeyStroke = Instance.new("UIStroke", GetKeyBtn)
+GetKeyStroke.Color = Color3.fromRGB(60, 60, 65)
+GetKeyStroke.Thickness = 1
+
+-- Nút Submit Key
+local SubmitBtn = Instance.new("TextButton")
+SubmitBtn.Name = "SubmitBtn"
+SubmitBtn.Parent = MainFrame
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(215, 35, 45)
+SubmitBtn.BackgroundTransparency = 0.1
+SubmitBtn.Position = UDim2.new(0.51, 0, 0.72, 0)
+SubmitBtn.Size = UDim2.new(0.41, 0, 0, 42)
+SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.Text = "SUBMIT KEY"
+SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitBtn.TextSize = 13.000
+
+local SubmitCorner = Instance.new("UICorner", SubmitBtn)
+SubmitCorner.CornerRadius = UDim.new(0, 8)
+
+-- Hiệu ứng Lắc & Tự Động Xóa Chữ
+local isShaking = false
+local function ShakeAndClearUI()
+    if isShaking then return end
+    isShaking = true
+    
+    KeyInput.Text = ""
+    
+    local originalPos = UDim2.new(0.5, 0, 0.5, 0)
+    local shakeOffsets = { 10, -10, 7, -7, 4, -4, 2, 0 }
+    
+    TweenService:Create(MainStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(255, 0, 0), Thickness = 3}):Play()
+    TweenService:Create(InputStroke, TweenInfo.new(0.1), {Color = Color3.fromRGB(255, 50, 50)}):Play()
+    
+    for _, offset in ipairs(shakeOffsets) do
+        local tween = TweenService:Create(
+            MainFrame,
+            TweenInfo.new(0.035, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+            {Position = UDim2.new(0.5, offset, 0.5, 0)}
+        )
+        tween:Play()
+        tween.Completed:Wait()
+    end
+    
+    MainFrame.Position = originalPos
+    
+    TweenService:Create(MainStroke, TweenInfo.new(0.3), {Color = Color3.fromRGB(230, 35, 45), Thickness = 2}):Play()
+    TweenService:Create(InputStroke, TweenInfo.new(0.3), {Color = Color3.fromRGB(50, 50, 55)}):Play()
+    
+    isShaking = false
+end
+
+-- Xử lý nút GET KEY
+GetKeyBtn.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard(KeyLink)
+        ShowInMenuNotice("KEY LINK COPIED TO CLIPBOARD!", false)
+    else
+        ShowInMenuNotice("EXECUTOR DOES NOT SUPPORT CLIPBOARD!", true)
+    end
+end)
+
+-- Xử lý nút SUBMIT KEY
+SubmitBtn.MouseButton1Click:Connect(function()
+    local InputtedKey = KeyInput.Text
+    
+    if InputtedKey == CorrectKey then
+        ShowInMenuNotice("ACCESS GRANTED! LOADING SCRIPT...", false)
+        
+        -- Lưu Key tự động
+        SaveKeyData(InputtedKey)
+        
+        task.wait(0.6)
+        local fadeOut = TweenService:Create(MainFrame, TweenInfo.new(0.4), {BackgroundTransparency = 1})
+        TweenService:Create(MainStroke, TweenInfo.new(0.4), {Transparency = 1}):Play()
+        TweenService:Create(Title, TweenInfo.new(0.4), {TextTransparency = 1}):Play()
+        TweenService:Create(TitleShadow, TweenInfo.new(0.4), {TextTransparency = 1}):Play()
+        TweenService:Create(SubTitle, TweenInfo.new(0.4), {TextTransparency = 1}):Play()
+        fadeOut:Play()
+        
+        fadeOut.Completed:Wait()
+        ScreenGui:Destroy()
+        
+        -- Load Script chính
+        loadstring(game:HttpGet(ScriptURL))()
+    else
+        ShowInMenuNotice("INVALID KEY! PLEASE TRY AGAIN.", true)
+        ShakeAndClearUI()
+    end
+end)
